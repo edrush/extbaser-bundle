@@ -1,5 +1,5 @@
 # Extbaser Bundle
-Create a TYPO3 Extbase Extension from an existing Symfony database.
+Create a TYPO3 Extbase Extension from an existing Symfony database schema.
 * Extbaser project homepage: https://github.com/edrush/extbaser
 
 ## Installation

@@ -1,7 +1,7 @@
 {
     "name": "edrush/extbaser-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony ExtbaserBundle",
+    "description": "Create a TYPO3 Extbase Extension from an existing Symfony database schema.",
     "keywords": ["Extbase", "ORM", "Database", "Export"],
     "license": "GPL",
     "authors": [
