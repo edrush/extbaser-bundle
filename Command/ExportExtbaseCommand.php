@@ -28,7 +28,7 @@ class ExportExtbaseCommand extends ContainerAwareCommand
 
             ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key')
 
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'The path to export the extension to', $this->getContainer()->getParameter('kernel.cache_dir'))
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL)
             ->addOption('em', null, InputOption::VALUE_OPTIONAL)
         ;
 
@@ -43,6 +43,7 @@ class ExportExtbaseCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getManager($input->getOption('em'));
+        $path = $input->getOption('path') ? $input->getOption('path') : $this->getContainer()->getParameter("kernel.cache_dir");
 
         $emName = $input->getOption('em');
         $emName = $emName ? $emName : 'default';
@@ -52,7 +53,7 @@ class ExportExtbaseCommand extends ContainerAwareCommand
 
         $exporter = new ExtbaseExporter($cmf);
         $exporter->setExtensionKey($input->getArgument('extension-key'));
-        $exporter->setPath($input->getOption('path'));
+        $exporter->setPath($path);
         \EdRush\Extbaser\Command\ExportExtbaseCommand::mapDefaultInputOptions($exporter, $input);
 
         $output->writeln(sprintf('Importing mapping information from "<info>%s</info>" entity manager', $emName));
