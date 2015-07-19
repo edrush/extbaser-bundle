@@ -29,10 +29,12 @@ class ExportExtbaseCommand extends ContainerAwareCommand
 	        ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key.')
 
             ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'The path to export the extension to.')
-            ->addOption('filter', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A string pattern used to match entities that should be mapped.')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Roundtrip existing project.')
         ;
+        
+        foreach (\EdRush\Extbaser\Command\ExportExtbaseCommand::getDefaultInputOptions() as $inputOption)
+        {
+        	$this->getDefinition()->addOption($inputOption);
+        }
     }
 
     /**
@@ -40,7 +42,6 @@ class ExportExtbaseCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	$extensionKey = $input->getArgument('extension-key');
         $exportPath = $input->getOption('path') ? $input->getOption('path') : $this->getContainer()->getParameter("kernel.cache_dir");
 
         $em = $this->getContainer()->get('doctrine')->getManager($input->getOption('em'));
@@ -52,7 +53,7 @@ class ExportExtbaseCommand extends ContainerAwareCommand
         $cmf->setEntityManager($em);
         
         $exporter = new ExtbaseExporter($cmf);
-        $exporter->setExtensionKey($extensionKey);
+        $exporter->setExtensionKey($input->getArgument('extension-key'));
         $exporter->setPath($exportPath);
         $exporter->setOverwriteExistingFiles($input->getOption('force'));
         $exporter->setFilter($input->getOption('filter'));
