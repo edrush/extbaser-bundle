@@ -1,5 +1,5 @@
 # Extbaser Bundle
-Create a TYPO3 Extbase Extension from an existing Symfony database schema.
+Create a TYPO3 Extbase Extension from a Symfony application.
 * Extbaser project homepage: https://github.com/edrush/extbaser
 
 ## Installation
@@ -12,7 +12,7 @@ Define the following requirement in your composer.json file:
 
 ## Usage
 
-Export your database schema to a TYPO3 extension with following command:
+Convert mapping information to a TYPO3 Extbase Extension:
 ```
 php app/console extbaser:export target_extension_key
 ```

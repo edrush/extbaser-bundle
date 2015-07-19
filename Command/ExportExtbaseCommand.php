@@ -11,9 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use EdRush\Extbaser\ExtbaseExporter;
 
 /**
- * Export an existing database schema to a Extbase project file (ExtensionBuilder.json).
- *
- * @author Wolfram Eberius <edrush@posteo.de>
+ * @author weberius
  */
 class ExportExtbaseCommand extends ContainerAwareCommand
 {
@@ -24,12 +22,13 @@ class ExportExtbaseCommand extends ContainerAwareCommand
     {
         $this
             ->setName('extbaser:export')
-            ->setDescription('Export an existing Symfony database schema to a TYPO3 Extbase Extension')
+            ->setDescription('Convert mapping information to a TYPO3 Extbase Extension')
 
             ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key')
 
             ->addOption('path', null, InputOption::VALUE_OPTIONAL)
             ->addOption('em', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('from-database', null, null, 'Whether or not to convert mapping information from existing database.')
         ;
 
         foreach (\EdRush\Extbaser\Command\ExportExtbaseCommand::getDefaultInputOptions() as $inputOption) {
@@ -43,7 +42,15 @@ class ExportExtbaseCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getManager($input->getOption('em'));
-        $path = $input->getOption('path') ? $input->getOption('path') : $this->getContainer()->getParameter("kernel.cache_dir");
+        $path = $input->getOption('path') ? $input->getOption('path') : $this->getContainer()->getParameter('kernel.cache_dir');
+
+        if ($input->getOption('from-database')) {
+            $em->getConfiguration()->setMetadataDriverImpl(
+                new \Doctrine\ORM\Mapping\Driver\DatabaseDriver(
+                    $em->getConnection()->getSchemaManager()
+                )
+            );
+        }
 
         $emName = $input->getOption('em');
         $emName = $emName ? $emName : 'default';
