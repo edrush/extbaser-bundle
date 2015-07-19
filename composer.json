@@ -16,6 +16,6 @@
         "doctrine/orm": ">=2.3"
     },
     "autoload": {
-        "psr-4": { "EdRush\\Bundle\\ExtbaserBundle": "" }
+        "psr-4": { "EdRush\\Bundle\\ExtbaserBundle\\": "" }
     }
 }

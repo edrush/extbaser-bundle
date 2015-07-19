@@ -5,6 +5,6 @@ Export an existing Symfony database scheme to a TYPO3 Extbase extension project.
 ```
 php app/console extbaser:export your_new_extension_key
 ```
-The generated extension consists of a folder containing the file *ExtensionBuilder.json*, which is the project file for the *Extension Builder*.
+The generated extension consists of a folder containing the file *ExtensionBuilder.json*, which is the project file for the *TYPO3 Extension Builder*.
 
 For more information, see [Extbaser](https://github.com/edrush/extbaser).
