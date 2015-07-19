@@ -23,17 +23,17 @@ class ExportExtbaseCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-	        ->setName('extbaser:export')
-	        ->setDescription('Export an existing database schema to a TYPO3 Extbase Extension.')
-	        
-	        ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key.')
+            ->setName('extbaser:export')
+            ->setDescription('Export an existing Symfony database schema to a TYPO3 Extbase Extension')
 
-            ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
+            ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key')
+
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'The path to export the extension to', $this->getContainer()->getParameter('kernel.cache_dir'))
+            ->addOption('em', null, InputOption::VALUE_OPTIONAL)
         ;
-        
-        foreach (\EdRush\Extbaser\Command\ExportExtbaseCommand::getDefaultInputOptions() as $inputOption)
-        {
-        	$this->getDefinition()->addOption($inputOption);
+
+        foreach (\EdRush\Extbaser\Command\ExportExtbaseCommand::getDefaultInputOptions() as $inputOption) {
+            $this->getDefinition()->addOption($inputOption);
         }
     }
 
@@ -42,8 +42,6 @@ class ExportExtbaseCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $exportPath = $input->getOption('path') ? $input->getOption('path') : $this->getContainer()->getParameter("kernel.cache_dir");
-
         $em = $this->getContainer()->get('doctrine')->getManager($input->getOption('em'));
 
         $emName = $input->getOption('em');
@@ -51,21 +49,20 @@ class ExportExtbaseCommand extends ContainerAwareCommand
 
         $cmf = new DisconnectedClassMetadataFactory();
         $cmf->setEntityManager($em);
-        
+
         $exporter = new ExtbaseExporter($cmf);
         $exporter->setExtensionKey($input->getArgument('extension-key'));
-        $exporter->setPath($exportPath);
-        $exporter->setOverwriteExistingFiles($input->getOption('force'));
-        $exporter->setFilter($input->getOption('filter'));
-        
+        $exporter->setPath($input->getOption('path'));
+        \EdRush\Extbaser\Command\ExportExtbaseCommand::mapDefaultInputOptions($exporter, $input);
+
         $output->writeln(sprintf('Importing mapping information from "<info>%s</info>" entity manager', $emName));
-        
+
         $result = $exporter->exportJson();
-        
+
         foreach ($exporter->getLogs() as $log) {
-        	$output->writeln($log);
+            $output->writeln($log);
         }
-        
-        return $result? 0 : 1;
+
+        return $result ? 0 : 1;
     }
 }
