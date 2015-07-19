@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use EdRush\Extbaser\ExtbaseExporter;
 
 /**
- * Export an existing database scheme to a Extbase project file (ExtensionBuilder.json).
+ * Export an existing database schema to a Extbase project file (ExtensionBuilder.json).
  *
  * @author Wolfram Eberius <edrush@posteo.de>
  */
@@ -23,10 +23,10 @@ class ExportExtbaseCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('extbaser:export')
-            ->setDescription('Export an existing database scheme to a TYPO3 Extbase extension project.')
-            
-            ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 extension key.')
+	        ->setName('extbaser:export')
+	        ->setDescription('Export an existing database schema to a TYPO3 Extbase Extension.')
+	        
+	        ->addArgument('extension-key', InputArgument::REQUIRED, 'The target TYPO3 Extension key.')
 
             ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'The path to export the extension to.')
