@@ -28,7 +28,7 @@ class ExportExtbaseCommand extends ContainerAwareCommand
 
             ->addOption('path', null, InputOption::VALUE_OPTIONAL)
             ->addOption('em', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('from-database', null, null, 'Whether or not to convert mapping information from existing database.')
+            ->addOption('from-database', null, null, 'Whether or not to convert mapping information from existing database')
         ;
 
         foreach (\EdRush\Extbaser\Command\ExportExtbaseCommand::getDefaultInputOptions() as $inputOption) {
