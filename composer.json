@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Create a TYPO3 Extbase Extension from an existing Symfony database schema.",
     "keywords": ["Extbase", "ORM", "Database", "Export"],
-    "license": "GPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "Wolfram Eberius", 
